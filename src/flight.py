@@ -16,7 +16,7 @@ class Flight:
         self.init_dicts = self.init_dicts()
 
         # Run calcs
-        self.run_calcs(places)
+        self.carbon_eq = self.run_calcs(places)
 
     def run_calcs(self, places):
         """ Runner method to do/redo calculations given ordered list of places """
@@ -25,6 +25,7 @@ class Flight:
         self.total_km = self.calc_distance(self.coords)
         self.carbon_eq = self.calc_carbon(self.total_km)
         print("Carbon Emission EQ:", self.carbon_eq)
+        return self.carbon_eq
 
     def get_coords(self, places):
         """ Takes a list of strings, returns a list of lat,long tuples """
