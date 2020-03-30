@@ -12,6 +12,7 @@ class Flight:
 
         # Init
         self.places = places
+        self.flight_class = flight_class
         self.geolocator = Nominatim(user_agent=user_agent)
         self.init_dicts = self.init_dicts()
 
@@ -44,6 +45,7 @@ class Flight:
         km = 0
         for i in range(len(coords) - 1):
             km += distance.distance(coords[i], coords[i+1]).km
+        print("Travelling", km, "km total")
         return km
 
     def calc_carbon(self, km):
@@ -53,7 +55,7 @@ class Flight:
         elif km > 2500:
             c = self.long_haul_dict
         else:
-            c = interp_dict(km)
+            c = self.interp_dict(km)
 
         cw = self.get_cw(c)
         x = km + c['dc']
@@ -79,11 +81,11 @@ class Flight:
         return constants
 
     def get_cw(self, c):
-        if 'economy':
+        if self.flight_class == 'economy':
             cw = c['econ_cw']
-        elif 'business':
+        elif self.flight_class == 'business':
             cw = c['busn_cw']
-        elif 'first':
+        elif self.flight_class == 'first':
             cw = c['fcls_cw']
         else:
             cw = None
